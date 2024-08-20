@@ -1,11 +1,9 @@
 ﻿#include <iostream>
 #include <unordered_map>
-#include <random>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <stdio.h>
-#include <tchar.h>
 #include <wchar.h>
 
 std::wstring get_extension(const std::wstring& path) {
@@ -68,8 +66,8 @@ void sort_files(const SORTINFO& sortinfo) {
     }
 
     do {
-        if (_tcscmp(find_data.cFileName, _T(".")) != 0 &&
-            _tcscmp(find_data.cFileName, _T("..")) != 0) {
+        if (wcscmp(find_data.cFileName, L".") != 0 &&
+            wcscmp(find_data.cFileName, L"..") != 0) {
             std::wstring old_file_relname(find_data.cFileName);
             std::wstring old_full_path = sortinfo.input_dir_wstr + L"\\" + old_file_relname;
 
