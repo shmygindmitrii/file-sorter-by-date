@@ -72,6 +72,7 @@ void sort_files(const SORTINFO& sortinfo) {
             std::wstring old_full_path = sortinfo.input_dir_wstr + L"\\" + old_file_relname;
 
             if (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+                // call for other directories inside input one
                 SORTINFO newsortinfo = {};
                 newsortinfo.input_dir_wstr = old_full_path;
                 newsortinfo.output_dir_wstr = sortinfo.output_dir_wstr;
@@ -79,16 +80,17 @@ void sort_files(const SORTINFO& sortinfo) {
                 sort_files(newsortinfo);
             }
             else {
+                // copy any file found
                 HANDLE hfile = CreateFileW(old_full_path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
                 FILETIME creation_time = {};
                 FILETIME last_access_time = {};
                 FILETIME last_write_time = {};
                 if (GetFileTime(hfile, &creation_time, &last_access_time, &last_write_time)) {
-                    std::pair<std::wstring, std::wstring> output = get_output_location(old_full_path, last_write_time);
-                    std::wstring new_dir = sortinfo.output_dir_wstr + L"\\" + output.first;
+                    auto [new_dirname, new_filename] = get_output_location(old_full_path, last_write_time);
+                    std::wstring new_dir = sortinfo.output_dir_wstr + L"\\" + new_dirname;
                     std::wstring new_filepath = new_dir + L"\\";
                     if (sortinfo.rename) {
-                        new_filepath += output.second + get_extension(old_full_path);
+                        new_filepath += new_filename + get_extension(old_file_relname);
                     }
                     else {
                         new_filepath += old_file_relname;
