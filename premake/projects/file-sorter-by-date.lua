@@ -2,7 +2,7 @@ project("file-sorter-by-date")
     kind("ConsoleApp")
     language "C++"
     cppdialect "C++17"
-    targetname("tests")
+    targetname("file-sorter-by-date")
     files({
         "../../source/file-sorter-by-date/src/sorter.cpp"
     })
