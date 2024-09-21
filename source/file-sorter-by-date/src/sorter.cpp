@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <unordered_map>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -55,7 +54,7 @@ struct SORTINFO {
     bool rename;
 };
 
-void sort_files(const SORTINFO& sortinfo) {
+static void sort_files(const SORTINFO& sortinfo) {
     std::wstring dir_path = {};
     dir_path = sortinfo.input_dir_wstr + L"\\*";
     WIN32_FIND_DATAW find_data;
